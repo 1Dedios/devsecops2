@@ -14,7 +14,7 @@ Parameters:
 
   LatestAmiId:
     Description: 'Latest Amazon Linux 2 AMI ID'
-    Type: AWS::EC2::Image::Id
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
 
 Resources:
@@ -149,20 +149,17 @@ Resources:
         - Key: Name
           Value: MySecurityGroup
 
-  
-  AWSTemplateFormatVersion: 2010-09-09
-    Description: Example template to create a Hub resource
-    Resources:
-      ExampleHubWithTags:
-        Type: 'AWS::SecurityHub::Hub'
-        Properties:
-          Tags:
-            key1: value1
-            key2: value2
-          EnableDefaultStandards: true
-          ControlFindingGenerator: 'SECURITY_CONTROL'
-      
-       
+  # -------------------
+  # Security Hub
+  # -------------------
+  ExampleHubWithTags:
+    Type: 'AWS::SecurityHub::Hub'
+    Properties:
+      Tags:
+        key1: value1
+        key2: value2
+      EnableDefaultStandards: true
+      ControlFindingGenerator: 'SECURITY_CONTROL'
 
   # -------------------
   # EC2 Instance in Public Subnet
@@ -172,8 +169,6 @@ Resources:
     Properties:
       ImageId: ami-0c55b159cbfafe1f0
       InstanceType: t2.micro
-            
-      
       SubnetId: !Ref PublicSubnet
       SecurityGroupIds:
         - !Ref MySecurityGroup
@@ -202,7 +197,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Service: ec2.amazonaws.comReusable VPC with Public and Private Subnets, Internet Gateway, and Route Tables
+              Service: ec2.amazonaws.com
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
