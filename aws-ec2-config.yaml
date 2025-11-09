@@ -149,6 +149,21 @@ Resources:
         - Key: Name
           Value: MySecurityGroup
 
+  
+  AWSTemplateFormatVersion: 2010-09-09
+    Description: Example template to create a Hub resource
+    Resources:
+      ExampleHubWithTags:
+        Type: 'AWS::SecurityHub::Hub'
+        Properties:
+          Tags:
+            key1: value1
+            key2: value2
+          EnableDefaultStandards: true
+          ControlFindingGenerator: 'SECURITY_CONTROL'
+      
+       
+
   # -------------------
   # EC2 Instance in Public Subnet
   # -------------------
